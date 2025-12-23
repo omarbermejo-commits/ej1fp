@@ -1,11 +1,16 @@
 import 'package:ej1fp/exportpages.dart';
 import 'package:flutter/material.dart';
 
-// Esta es la clase donde se gestiona todo el control de rutas.
 /* 
+        Clase encargada de gestionar las rutas de la aplicacion.
         Cuando la app se inicia, se le asigna un parametro este se define por un provaider o un gestion de cambios.
         Se valida atraves de una peticion HTTP la cual valida si el usuario esta loggueado o no. Una vez hecha esta validacion,
         se procede a redirigir hacia una pagina , sea "LoginScreen" o "HomeScreen", dependiendo el caso.
+
+        En caso de que el usuario intente acceder a una ruta que no existe, se redirige a "ErrorScreen".
+        
+        Ejemplo de uso:
+          Navigator.pushNamed(context, 'HomeScreen');
  */
 class AppRoute {
   static const inicialRoute = 'home';
@@ -20,11 +25,16 @@ class AppRoute {
       title: 'LoginScreen',
       screen: const LoginScreen(),
     ),
+    MenuOptions(
+      route: 'ErrorScreen',
+      title: 'ErrorScreen',
+      screen: ErrorScreen(),
+    ),
   };
 
   static Map<String, Widget Function(BuildContext)> getMenuRoutes() {
     Map<String, Widget Function(BuildContext)> appRoutes = {};
-    appRoutes.addAll({'home': (BuildContext context) => const HomeScreen()});
+    appRoutes.addAll({'home': (BuildContext context) => const LoginScreen()});
     for (final options in menuOptions) {
       appRoutes.addAll({
         options.route: (BuildContext context) => options.screen,
@@ -34,6 +44,6 @@ class AppRoute {
   }
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    return MaterialPageRoute(builder: (context) => const ErrorScreen());
+    return MaterialPageRoute(builder: (context) => ErrorScreen());
   }
 }
